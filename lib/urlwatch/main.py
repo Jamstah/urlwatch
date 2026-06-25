@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of urlwatch (https://thp.io/2008/urlwatch/).
-# Copyright (c) 2008-2023 Thomas Perl <m@thp.io>
+# Copyright (c) 2008-2024 Thomas Perl <m@thp.io>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -107,11 +107,10 @@ class Urlwatch(object):
 
     def run_jobs(self):
         run_jobs(self)
+        self.report.finish()
 
     def close(self):
-        reported = self.report.finish()
-
-        if not reported:
+        if not self.report.reporters_enabled:
             logger.warning('No reporters enabled.')
 
         for job_state in self.report.job_states:

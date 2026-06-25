@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of urlwatch (https://thp.io/2008/urlwatch/).
-# Copyright (c) 2008-2023 Thomas Perl <m@thp.io>
+# Copyright (c) 2008-2024 Thomas Perl <m@thp.io>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -142,6 +142,19 @@ class UrlwatchCommand:
         # (ignore_cached) and we do not want to store the newly-retrieved data yet (filter testing)
         return 0
 
+    def prepare_jobs(self):
+        new_jobs = set()
+        for idx, job in enumerate(self.urlwatcher.jobs):
+            has_history = self.urlwatcher.cache_storage.has_history_data(job.get_guid())
+            if not has_history:
+                logger.info('Add Job: %s', job.pretty_name())
+                new_jobs.add(idx + 1)
+        if not new_jobs and not self.urlwatch_config.idx_set:
+            return 0
+        self.urlwatch_config.idx_set = self.urlwatch_config.idx_set.union(new_jobs)
+        self.urlwatcher.run_jobs()
+        self.urlwatcher.close()
+
     def _resolve_job_history(self, id, max_entries=10):
         job = self._get_job(id)
 
@@ -274,6 +287,8 @@ class UrlwatchCommand:
             sys.exit(self.test_filter(self.urlwatch_config.test_filter))
         if self.urlwatch_config.test_diff_filter:
             sys.exit(self.test_diff_filter(self.urlwatch_config.test_diff_filter))
+        if self.urlwatch_config.prepare_jobs:
+            sys.exit(self.prepare_jobs())
         if self.urlwatch_config.dump_history:
             sys.exit(self.dump_history(self.urlwatch_config.dump_history))
         if self.urlwatch_config.list:
@@ -473,11 +488,13 @@ class UrlwatchCommand:
             sys.exit(0)
 
     def run(self):
-        self.check_edit_config()
-        self.check_smtp_login()
-        self.check_telegram_chats()
-        self.check_xmpp_login()
-        self.check_test_reporter()
-        self.handle_actions()
-        self.urlwatcher.run_jobs()
-        self.urlwatcher.close()
+        try:
+            self.check_edit_config()
+            self.check_smtp_login()
+            self.check_telegram_chats()
+            self.check_xmpp_login()
+            self.check_test_reporter()
+            self.handle_actions()
+            self.urlwatcher.run_jobs()
+        finally:
+            self.urlwatcher.close()

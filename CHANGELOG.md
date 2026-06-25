@@ -8,11 +8,29 @@ The format mostly follows [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 
 ### Added
 
+- New command-line option `--prepare-jobs` to initialize new jobs or jobs without history (#831 by nille02)
+- New reporter: `ntfy` (#854 by fyrk)
+- New boolean `json` option for `url` jobs: serializes `data` as JSON and sets `Content-type: application/json` (contributed in #866 by Louis Sautier)
+
+### Changed
+
+- Remove EOL'd Python 3.8 (new minimum requirement is Python 3.9), add Python 3.13 and 3.14 testing
+
+### Fixed
+
+- Fix shell reporter running even when diff is empty (#837, by MarcPer)
+- Filter for gitlab.com tags fixed (#839, by julianuu)
+- Fix `TypeError` when jobs don't have tags (#843 by Maxime Werlen)
+- Fix `ResourceWarning` when running non-reporting commands (#865, reported by Hanno Böck)
+
+## [2.29] -- 2024-10-28
+
+### Added
+
 - New `enabled` option for all jobs. Set to false to disable a job without needing to remove it or comment it out (Requested in #625 by snowman, contributed in #785 by jamstah)
-- Command line options to enable and disbale jobs (Requested in #813 by gapato, contributed in #820 by jamstah)
+- Command line options to enable and disable jobs (Requested in #813 by gapato, contributed in #820 by jamstah)
 - New option `ignore_incomplete_reads` (Requested in #725 by wschoot, contributed in #787 by wfrisch)
 - New option `wait_for` in browser jobs (Requested in #763 by yuis-ice, contributed in #810 by jamstah)
-- Added tags to jobs and the ability to select them at the command line (#789 by jamstah)
 - New filter `re.findall` (Requested in #804 by f0sh, contributed in #805 by jamstah)
 - Added tags to jobs and the ability to select them at the command line (#789, #824 by jamstah)
 - New reporter: `gotify` (#823 by franco-righetti)
@@ -24,6 +42,7 @@ The format mostly follows [Keep a Changelog](http://keepachangelog.com/en/1.0.0/
 - Adds optional `reply_to` option for email reporters (#794 by trevorshannon)
 - Replace the dead dependency `appdirs` with `platformdirs` (#811 by Maxime Werlen, #819 via e-dschungel)
 - New concurrency test (#806 by Jamstah)
+- `jobs.yaml` sanity checks now allow the file to be owned by `root` (#828)
 
 ### Fixed
 
