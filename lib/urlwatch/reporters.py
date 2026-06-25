@@ -152,15 +152,15 @@ class ReporterBase(object, metaclass=TrackSubClasses):
                 else:
                     subclass(report, cfg, matching_job_states, len(job_states), duration).submit()
                     for job_state in matching_job_states:
-                        job_state.reported_count = job_state.reported_count + 1
+                        job_state.reported_count += 1
 
         return any_enabled
 
     @classmethod
     def submit_all(cls, report, job_states, duration):
         any_enabled = False
-        for name in cls.__subclasses__.keys():
-            any_enabled = any_enabled | ReporterBase.submit_one(name, report, job_states, duration)
+        for name in cls.__subclasses__:
+            any_enabled |= ReporterBase.submit_one(name, report, job_states, duration)
 
         return any_enabled
 

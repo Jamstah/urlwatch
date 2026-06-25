@@ -395,9 +395,9 @@ class UrlwatchCommand:
                                    'Same Old, Same Old\n'))
         report.error(set_error(build_job('Error Reporting', 'http://example.com/error', '', ''), 'Oh Noes!'))
 
-        reported = report.finish_one(name)
+        report.finish_one(name)
 
-        if not reported:
+        if not report.reporters_enabled:
             raise ValueError(f'Reporter not enabled: {name}')
 
         sys.exit(0)
