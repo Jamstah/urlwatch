@@ -145,7 +145,7 @@ class ReporterBase(object, metaclass=TrackSubClasses):
                 any_enabled = True
                 logger.info('Submitting with %s (%r)', name, subclass)
                 base_config = subclass.get_base_config(report)
-                matching_job_states = filter_by_tags(job_states, cfg.get("tags", []))
+                matching_job_states = filter_by_tags(job_states, cfg.get("tags"))
                 if base_config.get('separate', False):
                     for job_state in matching_job_states:
                         subclass(report, cfg, [job_state], duration, len(job_states)).submit()
