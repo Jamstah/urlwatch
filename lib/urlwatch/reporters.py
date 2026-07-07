@@ -90,12 +90,12 @@ def filter_by_tags(job_states, tags):
 class ReporterBase(object, metaclass=TrackSubClasses):
     __subclasses__ = {}
 
-    def __init__(self, report, config, job_states, job_count_total, duration):
+    def __init__(self, report, config, job_states, duration, job_count_total):
         self.report = report
         self.config = config
         self.job_states = job_states
-        self.job_count_total = job_count_total
         self.duration = duration
+        self.job_count_total = job_count_total
 
     def get_signature(self):
         return (
@@ -117,7 +117,7 @@ class ReporterBase(object, metaclass=TrackSubClasses):
         else:
             config = {}
 
-        return othercls(self.report, config, self.job_states, self.job_count_total, self.duration)
+        return othercls(self.report, config, self.job_states, self.duration, self.job_count_total)
 
     @classmethod
     def get_base_config(cls, report):
@@ -148,10 +148,10 @@ class ReporterBase(object, metaclass=TrackSubClasses):
                 matching_job_states = filter_by_tags(job_states, cfg.get("tags", []))
                 if base_config.get('separate', False):
                     for job_state in matching_job_states:
-                        subclass(report, cfg, [job_state], len(job_states), duration).submit()
+                        subclass(report, cfg, [job_state], duration, len(job_states)).submit()
                         job_state.reported_count = job_state.reported_count + 1
                 else:
-                    subclass(report, cfg, matching_job_states, len(job_states), duration).submit()
+                    subclass(report, cfg, matching_job_states, duration, len(job_states)).submit()
                     for job_state in matching_job_states:
                         job_state.reported_count += 1
 
