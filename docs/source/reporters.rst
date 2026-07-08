@@ -54,29 +54,29 @@ the ``--verbose`` command-line option to show detailed debug logs.
 Common options
 --------------
 
-You can use a list of configurations under a reporter type to report
-different jobs with different configurations. You can select the jobs
-for each reporter by using tags.
+The following configuration options can be applied to any reporter:
 
-You can enable or disable a reporter by using the ``enabled`` option.
+* ``enabled``: Disable or enable a reporter
+* ``tags``: A list of tags that will be selected by this reporter
+
+Configuring multiple reporters of the same type
+-----------------------------------------------
+
+You can configure one reporter type to run multiple times by using a list of
+reporter configurations instead of a single reporter configuration in the
+config file. You can select the jobs for each reporter by using tags.
 
 For example:
 
 .. code:: yaml
 
-   telegram:
-   - bot_token: '999999999:3tOhy2CuZE0pTaCtszRfKpnagOG8IQbP5gf' # your bot api token
-     chat_id:
-       - '11111111'
-       - '22222222'
-     enabled: true
-     tags: [chat1]
-   - bot_token: '999999999:90jf403vnc09m0vi4s09t409jc09fj09sdc' # your bot api token
-     chat_id:
-       - '33333333'
-       - '44444444'
-     tags: [chat2]
-     enabled: true
+   slack:
+     - webhook_url: 'https://hooks.slack.com/services/AAAAAAAAAA/BBBBBBBBBB/CCCCCCCCCCCCCCCCCCCCCC'
+       tags: ["personal"]
+       enabled: true
+     - webhook_url: 'https://hooks.slack.com/services/XXXXXXXXXX/YYYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZ'
+       tags: ["personal"]
+       enabled: true
 
 
 Built-in reporters
