@@ -104,10 +104,10 @@ class ReporterBase(object, metaclass=TrackSubClasses):
                                                       copyright=urlwatch.__copyright__),
             'Website: {url}'.format(url=urlwatch.__url__),
             'Support urlwatch development: https://github.com/sponsors/thp',
-            '{total} URLs tested in {duration} seconds'.format(
+            'watched {total} URLs in {duration} seconds'.format(
                 total=self.job_count_total,
                 duration=self.duration.seconds),
-            'This report covers {count} URLs'.format(
+            'this report covers {count} URLs'.format(
                 count=len(self.job_states)),
         )
 
