@@ -75,7 +75,7 @@ For example:
        tags: ["personal"]
        enabled: true
      - webhook_url: 'https://hooks.slack.com/services/XXXXXXXXXX/YYYYYYYYYY/ZZZZZZZZZZZZZZZZZZZZZZ'
-       tags: ["personal"]
+       tags: ["team"]
        enabled: true
 
 
