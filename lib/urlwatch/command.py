@@ -217,12 +217,12 @@ class UrlwatchCommand:
             job = self._get_single_job(self.urlwatch_config.enable)
             job.enabled = True
             print(f'Enabled {job!r}')
-            
+
         if self.urlwatch_config.disable is not None:
             job = self._get_single_job(self.urlwatch_config.disable)
             job.enabled = False
             print(f'Disabled {job!r}')
-            
+
         if self.urlwatch_config.add is not None:
             # Allow multiple specifications of filter=, so that multiple filters can be specified on the CLI
             items = [item.split('=', 1) for item in self.urlwatch_config.add.split(',')]
