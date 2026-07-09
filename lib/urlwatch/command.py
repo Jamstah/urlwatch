@@ -94,17 +94,21 @@ class UrlwatchCommand:
         print()
         return 0
 
+    def _pretty_print_job(self, idx, job):
+        prefix = f"{idx}: " if idx else ""
+        if self.urlwatch_config.verbose:
+            print('%s%s' % (prefix, repr(job)))
+        else:
+            pretty_name = job.pretty_name()
+            location = job.get_location()
+            if pretty_name != location:
+                print('%s%s ( %s )' % (prefix, pretty_name, location))
+            else:
+                print('%s%s' % (prefix, pretty_name))
+
     def list_urls(self):
         for idx, job in enumerate(self.urlwatcher.jobs, 1):
-            if self.urlwatch_config.verbose:
-                print('%d: %s' % (idx, repr(job)))
-            else:
-                pretty_name = job.pretty_name()
-                location = job.get_location()
-                if pretty_name != location:
-                    print('%d: %s ( %s )' % (idx, pretty_name, location))
-                else:
-                    print('%d: %s' % (idx, pretty_name))
+            self._pretty_print_job(idx, job)
         return 0
 
     def _find_jobs(self, query):
@@ -128,6 +132,8 @@ class UrlwatchCommand:
             raise SystemExit(1)
         if len(jobs) > 1:
             print('Matched multiple jobs: {!r}'.format(id))
+            for job in jobs:
+                self._pretty_print_job(None, job)
             raise SystemExit(1)
         return jobs[0].with_defaults(self.urlwatcher.config_storage.config)
 
